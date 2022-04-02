@@ -31,9 +31,9 @@ List::List(std::initializer_list<var> l)
 
 void List::append(var x) { impl_->values_.push_back(x); }
 
-_ListInternal::iterator List::begin() { return impl_->values_.begin(); }
+List::iterator List::begin() { return impl_->values_.begin(); }
 
-_ListInternal::iterator List::end() { return impl_->values_.end(); }
+List::iterator List::end() { return impl_->values_.end(); }
 
 List list() { return list({}); }
 

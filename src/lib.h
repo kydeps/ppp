@@ -6,8 +6,6 @@
 
 using var = std::any;
 
-using _ListInternal = std::vector<var>;
-
 class List {
 public:
   // API -----------------------------------------------------------------------
@@ -18,8 +16,9 @@ public:
 
   List(std::initializer_list<var> l);
 
-  _ListInternal::iterator begin();
-  _ListInternal::iterator end();
+  using iterator = std::vector<var>::iterator;
+  iterator begin();
+  iterator end();
 
   struct Impl;
   std::shared_ptr<Impl> impl_;
