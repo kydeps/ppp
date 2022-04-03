@@ -18,7 +18,7 @@ becomes:
         ...
     }
 
-print(x) is the same
+print(x) is the same»
 
 */
 
@@ -26,7 +26,7 @@ int main() {
   auto l = list();
   l.append(1);
 
-  auto l2 = list({2, 3});
+  list l2 = {2, 3};
   l.append(l2);
 
   print(l);
@@ -35,5 +35,34 @@ int main() {
     print(x);
   }
 
-  print(list({l2, l, 3, l2}));
+  // NOTE: if we did `var x = ...` then later .append does not work
+  auto x = list({2, 3, list({5})});
+
+  x[1] = 500;
+
+  print(x);
+  // auto y{x(33,5)};
+  x.append(x(3,5));
+
+  x.append(5);
+  print(x);
 }
+
+/*
+  - libraries
+    - datetime
+    - numpy
+    - pandas
+    - pygames
+  - control the system
+    - run process 
+      - arguments from local vars
+      - get return value (exit code)
+      - read output of process
+    - read files
+      - parse files
+      - parse csvs (with headers)
+    - save csvs
+
+  - more natural language
+*/
