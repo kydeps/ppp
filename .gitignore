@@ -1,0 +1,9 @@
+/.gitignore
+/.clang-format
+/.clang-tidy
+/.cmake-lint
+/.vscode
+/.vscode/**
+/build
+/build/**
+.DS_Store

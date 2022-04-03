@@ -1,4 +1,9 @@
-add_executable(test0 test.cc lib.cc)
+add_subdirectory(ppp)
+
+add_executable(test0 test.cc)
+target_link_libraries(test0
+    PRIVATE ppp::ppp GTest::gtest GTest::gtest_main
+)
 KyDepsPackageTarget(test0)
 
-add_test(NAME test0 COMMAND test0)
+gtest_discover_tests(test0)

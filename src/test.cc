@@ -1,4 +1,8 @@
-#include "lib.h"
+#include <gtest/gtest.h>
+
+#include <ppp/ppp.h>
+
+using namespace ppp;
 
 /*
 mapping:
@@ -22,7 +26,29 @@ print(x) is the same»
 
 */
 
-int main() {
+TEST(ppp, lists) {  // NOLINT
+  ASSERT_EQ("[]", str(list()));
+  ASSERT_EQ("[1, 2, 3]", str(list({1, 2, 3})));
+
+  list l = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  ASSERT_EQ("[1, 2, 3, 4, 5, 6, 7, 8, 9]", str(l));
+  ASSERT_EQ("[3, 4]", str(l(2, 4)));
+  ASSERT_EQ("5", str(l[4]));
+
+  //ASSERT_EQ("[1, 2, 3, 4, 5, 6, 7, 8, 9]", str(l({},{}))); // l[:]
+
+  l(2, 5) = list();
+  ASSERT_EQ("[1, 2, 6, 7, 8, 9]", str(l));
+
+  l(2, 3) = list({10, 11, 12});
+  ASSERT_EQ("[1, 2, 10, 11, 12, 7, 8, 9]", str(l));
+
+  // TODO: test negative indices
+  // TODO: define None
+}
+
+TEST(ppp, common) {  // NOLINT
   auto l = list();
   l.append(1);
 
@@ -42,7 +68,8 @@ int main() {
 
   print(x);
   // auto y{x(33,5)};
-  x.append(x(3,5));
+  x(1, 2) = list({7, 7, 7});
+  print(x(1, 2));
 
   x.append(5);
   print(x);
@@ -55,7 +82,7 @@ int main() {
     - pandas
     - pygames
   - control the system
-    - run process 
+    - run process
       - arguments from local vars
       - get return value (exit code)
       - read output of process
