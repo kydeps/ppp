@@ -14,7 +14,7 @@ inline std::string str(int x) {
 }
 
 template <typename T>
-inline std::string str(list_<T> x) {
+std::string str(list_<T> x) {
   std::string result = "[";
   bool first = true;
   for (auto &value : *x.values_) {
@@ -26,6 +26,11 @@ inline std::string str(list_<T> x) {
     result += str(value);
   }
   return result + "]";
+}
+
+template <typename T>
+std::string str(const list_slice_<T> &x) {
+  return str(list_<T>(x));
 }
 
 }  // namespace ppp

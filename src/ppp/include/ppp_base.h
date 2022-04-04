@@ -1,12 +1,17 @@
 #pragma once
 
-#include <any>
-#include <string>
+#include <iostream>
+#include <exception>
 
 namespace ppp {
 
-using var = std::any;
+template <typename T>
+void print(T x) {
+    std::cout << str(x) << std::endl;
+}
 
-void print(var x);
+class PPPError: std::exception {};
+class TypeError final : PPPError {};
+class IndexError final : PPPError {};
 
 }  // namespace ppp

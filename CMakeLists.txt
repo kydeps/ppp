@@ -4,7 +4,7 @@ project(ppp VERSION 0.1)
 set(CMAKE_CXX_STANDARD 23)
 
 set(KYDEPS_BOILERPLATE_CLANG_TIDY OFF)
-set(KYDEPS_TARGETS GTest)
+set(KYDEPS_TARGETS glog GTest)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -15,5 +15,6 @@ FetchContent_MakeAvailable(kydeps_boilerplate)
 KyDepsAddBoilerplate()
 
 find_package(GTest)
+find_package(glog)
 
 add_subdirectory(src)
