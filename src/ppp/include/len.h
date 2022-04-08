@@ -4,6 +4,8 @@
 
 namespace ppp {
 
+int len(var x);
+
 template <typename T>
 int len(list_<T> x) {
   return x.values_->size();

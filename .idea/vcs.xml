@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_boilerplate-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_bootstrap-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_definitions-build/GTest.bf23d61b1cabe072026b445dc322479efdf73b78/s" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_definitions-build/_deps/kydeps_bootstrap-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_definitions-build/gflags.c268e924dfb0e4c863444fd4ac54bd01665d1a43/s" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_definitions-build/gflags.c268e924dfb0e4c863444fd4ac54bd01665d1a43/s/doc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_definitions-build/glog.ee34efcf1d09a2ff24e4c6764ce0048750eae411/s" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/build/_deps/kydeps_definitions-src" vcs="Git" />
+  </component>
+</project>

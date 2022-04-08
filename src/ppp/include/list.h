@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "eq.h"
 #include "ppp_base.h"
 #include "var.h"
 
@@ -33,7 +34,15 @@ public:
 
   void insert(int i, T x) {
     values_->insert(values_->begin() + check_index(i), x);
-  }  
+  }
+
+  void remove(const T &x) {
+    auto result = std::find(values_->begin(), values_->end(), x);
+    if (result == values_->end()) {
+      throw ValueError();
+    }
+    values_->erase(result);
+  }
 
   T pop(int i) {
     i = check_index(i);
@@ -42,8 +51,58 @@ public:
     return result;
   }
 
-  T pop() {
-    return pop(-1);
+  T pop() { return pop(-1); }
+
+  void clear() { values_->clear(); }
+
+  int index(const T &x, int from_index, int to_index) {
+    auto end = values_->begin() + check_index(to_index);
+    auto result = std::find(values_->begin() + check_index(from_index), end, x);
+    if (result == end) {
+      throw ValueError();
+    }
+    return result - values_->begin();
+  }
+
+  int index(const T &x, int from_index) {
+    auto result = std::find(
+        values_->begin() + check_index(from_index),
+        values_->end(),
+        x);
+    if (result == values_->end()) {
+      throw ValueError();
+    }
+    return result - values_->begin();
+  }
+
+  int index(const T &x) { return index(x, 0); }
+
+  int count(const T &x) {
+    return std::count(values_->begin(), values_->end(), x);
+  }
+
+  void sort() { std::sort(values_->begin(), values_->end()); }
+
+  void sort(std::function<var(var)> key) {
+    std::sort(values_->begin(), values_->end(), [key](var x, var y) {
+      return key(x) < key(y);
+    });
+  }
+
+  void sort(bool reverse) {
+    std::sort(values_->begin(), values_->end(), [reverse](var x, var y) {
+      return (x < y) != reverse;
+    });
+  }
+
+  void sort(std::function<var(var)> key, bool reverse) {
+    std::sort(values_->begin(), values_->end(), [key, reverse](var x, var y) {
+      return (key(x) < key(y)) != reverse;
+    });
+  }
+
+  list_<T> copy() {
+    return slice(0);
   }
 
   T &operator[](int index) { return (*values_)[check_index(index)]; };

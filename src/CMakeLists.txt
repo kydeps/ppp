@@ -1,4 +1,5 @@
 add_subdirectory(ppp)
+add_subdirectory(kypy)
 
 add_executable(test0 test.cc)
 target_link_libraries(test0

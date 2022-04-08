@@ -68,25 +68,95 @@ TEST(ppp, negative_indices) {  // NOLINT
   ASSERT_THROW(l[-7], IndexError);
 }
 
-TEST(ppp, list_methods) {  // NOLINT
+TEST(ppp, str) {  // NOLINT
   list l = {1, 2, 3};
 
   ASSERT_EQ("[1, 2]", str(l.slice(0, -1)));
   ASSERT_EQ("[2, 3]", str(l.slice(1)));
   ASSERT_EQ("[2, 3]", str(l.slice(-2)));
+}
 
+TEST(ppp, list_extend) {  // NOLINT
+  list l = {1, 2, 3};
   l.extend(list({4, 5, 6}));
   ASSERT_EQ("[1, 2, 3, 4, 5, 6]", str(l));
+}
 
+TEST(ppp, list_insert) {  // NOLINT
+  list l = {1, 2, 3, 4, 5, 6};
   l.insert(0, -5);
   l.insert(-1, -5);
   l.insert(3, -5);
   ASSERT_EQ("[-5, 1, 2, -5, 3, 4, 5, -5, 6]", str(l));
+}
+
+TEST(ppp, list_index) {  // NOLINT
+  list l = {-5, 1, 2, -5, 3, 4, 5, -5, 6};
+  ASSERT_EQ(0, l.index(-5));
+  ASSERT_EQ(3, l.index(-5, 1));
+  ASSERT_EQ(3, l.index(-5, 1, 5));
+  ASSERT_THROW(l.index(-6), ValueError);
+  ASSERT_THROW(l.index(-6, 1), ValueError);
+  ASSERT_THROW(l.index(-6, 1, 5), ValueError);
+  ASSERT_EQ(1, l.index(1));
+  ASSERT_THROW(l.index(1, 2), ValueError);
+}
+
+TEST(ppp, list_count) {  // NOLINT
+  list l = {-5, 1, 2, -5, 3, 4, 5, -5, 6};
+  ASSERT_EQ(3, l.count(-5));
+  ASSERT_EQ(0, l.count(-6));
+  ASSERT_EQ(1, l.count(1));
+}
+
+TEST(ppp, list_pop) {  // NOLINT
+  list l = {-5, 1, 2, -5, 3, 4, 5, -5, 6};
 
   ASSERT_EQ("6", str(l.pop()));
   ASSERT_EQ("-5", str(l.pop(0)));
   ASSERT_EQ("-5", str(l.pop(2)));
   ASSERT_EQ("[1, 2, 3, 4, 5, -5]", str(l));
+}
+
+TEST(ppp, list_remove) {  // NOLINT
+  list l = {1, 2, 3, 4, 5, -5};
+  l.remove(3);
+  ASSERT_EQ("[1, 2, 4, 5, -5]", str(l));
+  ASSERT_THROW(l.remove(7), ValueError);
+}
+
+TEST(ppp, list_clear) {  // NOLINT
+  list l = {1, 2, 4, 5, -5};
+  l.clear();
+  ASSERT_EQ("[]", str(l));
+}
+
+TEST(ppp, str_2) {  // NOLINT
+  auto l = list();
+  l.append(list({1}));
+  l.append(list({2, 3}));
+  l.append(list({4, 5, 6}));
+  ASSERT_EQ("[[1], [2, 3], [4, 5, 6]]", str(l));
+}
+
+TEST(ppp, list_index_2) {  // NOLINT
+  auto l = list();
+  l.append(list({1}));
+  l.append(list({2, 3}));
+  l.append(list({4, 5, 6}));
+
+  ASSERT_EQ(1, l.index(list({2, 3})));
+  ASSERT_THROW(l.index(list({2})), ValueError);
+}
+
+TEST(ppp, list_count_2) {  // NOLINT
+  auto l = list();
+  l.append(list({1}));
+  l.append(list({2, 3}));
+  l.append(list({4, 5, 6}));
+
+  ASSERT_EQ(1, l.count(list({2, 3})));
+  ASSERT_EQ(0, l.count(list({2})));
 }
 
 TEST(ppp, len) {  // NOLINT
@@ -98,11 +168,70 @@ TEST(ppp, len) {  // NOLINT
   ASSERT_THROW(len(1), TypeError);
 }
 
-TEST(ppp, comprehension) { // NOLINT
+// #include <string_view>
+
+// template <typename T>
+// constexpr auto type_name() {
+//   std::string_view name, prefix, suffix;
+// #ifdef __clang__
+//   name = __PRETTY_FUNCTION__;
+//   prefix = "auto type_name() [T = ";
+//   suffix = "]";
+// #elif defined(__GNUC__)
+//   name = __PRETTY_FUNCTION__;
+//   prefix = "constexpr auto type_name() [with T = ";
+//   suffix = "]";
+// #elif defined(_MSC_VER)
+//   name = __FUNCSIG__;
+//   prefix = "auto __cdecl type_name<";
+//   suffix = ">(void)";
+// #endif
+//   name.remove_prefix(prefix.size());
+//   name.remove_suffix(suffix.size());
+//   return name;
+// }
+
+var key2(var x) {
+  print(x);
+  // std::cout << type_name<decltype(x)>() << std::endl;
+  std::cout << x.value_.type().name() << std::endl;
+  return len(x);
+}
+
+TEST(ppp, list_sort) {  // NOLINT
+  list l = {-3, 3, -3, 1, 5};
+  l.sort();
+  ASSERT_EQ("[-3, -3, 1, 3, 5]", str(l));
+  l.sort(true);
+  ASSERT_EQ("[5, 3, 1, -3, -3]", str(l));
+
+  list l2 = {list({1, 2}), list({1}), list({1, -1, 4})};
+  l2.sort();
+  ASSERT_EQ("[[1], [1, -1, 4], [1, 2]]", str(l2));
+  l2.sort(true);
+  ASSERT_EQ("[[1, 2], [1, -1, 4], [1]]", str(l2));
+
+  l2.sort([](auto x){ return len(x); }, true);
+  ASSERT_EQ("[[1, -1, 4], [1, 2], [1]]", str(l2));
+}
+
+TEST(ppp, list_copy) { // NOLINT
+  list l = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  auto l2 = l;
+  auto l3 = l.copy();
+  ASSERT_EQ("[1, 2, 3, 4, 5, 6, 7, 8, 9]", str(l));
+  l[3] = 400;
+  ASSERT_EQ("[1, 2, 3, 400, 5, 6, 7, 8, 9]", str(l));
+  ASSERT_EQ("[1, 2, 3, 400, 5, 6, 7, 8, 9]", str(l2));
+  ASSERT_EQ("[1, 2, 3, 4, 5, 6, 7, 8, 9]", str(l3));
+}
+
+TEST(ppp, comprehension) {  // NOLINT
   list l = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
   // [x * 2 for x in l]
-  // for 
+  // for
   // [](auto x) { return x * 2 }
 }
 

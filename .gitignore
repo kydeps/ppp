@@ -1,9 +1,1 @@
-/.gitignore
-/.clang-format
-/.clang-tidy
-/.cmake-lint
-/.vscode
-/.vscode/**
-/build
-/build/**
-.DS_Store
+/Users/kamen/work/ppp/cmake-build-debug/_deps/kydeps_boilerplate-src/.gitignore.copy

@@ -13,5 +13,6 @@ void print(T x) {
 class PPPError: std::exception {};
 class TypeError final : PPPError {};
 class IndexError final : PPPError {};
+class ValueError final : PPPError {};
 
 }  // namespace ppp
