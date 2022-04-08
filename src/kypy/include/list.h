@@ -13,7 +13,7 @@ class list_;
 
 class list_slice final {
 public:
-  void operator =(var &&l);
+  void operator =(var &&v);
 
 private:
   friend class list;
@@ -36,6 +36,7 @@ public:
   list(std::initializer_list<var> values);
 
   void append(var x);
+  void extend(var x);
 
   friend bool operator==(const list &x, const list &y);
 

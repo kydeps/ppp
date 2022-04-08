@@ -16,6 +16,10 @@ void list::append(var x) {
   slice(size()) = list({x});
 }
 
+void list::extend(var x) {
+  slice(size()) = std::move(x);
+}
+
 bool operator==(const list &x, const list &y) {
   return x.impl_->values_ == y.impl_->values_;
 }
@@ -78,6 +82,6 @@ list_slice::list_slice(int from_index, list &l)
       to_index_(l.size()),
       l_(l) {}
 
-void list_slice::operator=(var &&l) { l_.replace(from_index_, to_index_, l); }
+void list_slice::operator=(var &&v) { l_.replace(from_index_, to_index_, v); }
 
 }  // namespace kypy

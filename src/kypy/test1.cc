@@ -49,3 +49,11 @@ TEST(kypy, list_append) {  // NOLINT
   l.append(list({1, 2}));
   KYPY_ASSERT_EQ("[1, 2, 3, 4, [1, 2]]", str(l));
 }
+
+TEST(kypy, list_extend) {  // NOLINT
+  list l = {1, 2, 3};
+  l.extend(list({4}));
+  KYPY_ASSERT_EQ("[1, 2, 3, 4]", str(l));
+  l.extend(list({5, 6}));
+  KYPY_ASSERT_EQ("[1, 2, 3, 4, 5, 6]", str(l));
+}
