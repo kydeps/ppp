@@ -6,11 +6,9 @@
 
 namespace kypy {
 
-void slice::operator=(sequence&& v) {
-  s_.replace(bi_, ei_, v);
-}
+void sequence_slice::operator=(sequence&& v) { s_.replace(bi_, ei_, v); }
 
-slice::slice(integer bi, integer ei, sequence& s) : bi_(bi), ei_(ei), s_(s){}
+sequence_slice::sequence_slice(integer bi, integer ei, sequence& s) : bi_(bi), ei_(ei), s_(s) {}
 
 sequence::sequence() : impl_(std::make_shared<impl::sequence_>()) {}
 
@@ -19,6 +17,14 @@ sequence::sequence(std::initializer_list<any> values)
 
 any sequence::operator[](const any& i) const {
   return impl_->values_[impl_->check_index(i, false)];
+}
+
+sequence_slice sequence::slice(const any& bi, const any& ei) {
+  return {impl_->check_index(bi, true), impl_->check_index(ei, true), *this};
+}
+
+sequence_slice sequence::slice(const any& bi) {
+  return {impl_->check_index(bi, true), size(), *this};
 }
 
 bool operator==(const sequence& x, const sequence& y) {
@@ -37,6 +43,7 @@ bool operator<(const sequence& x, const sequence& y) {
 
 any* sequence::begin() const { return &impl_->values_[0]; }
 any* sequence::end() const { return begin() + impl_->size(); }
+integer sequence::size() const { return end() - begin(); }
 
 void sequence::replace(integer bi, integer ei, const sequence& s) {
   auto& dst = impl_->values_;

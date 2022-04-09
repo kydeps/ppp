@@ -15,7 +15,6 @@ public:
   sequence_(const any *begin, const any *end) : values_(begin, end){};
 
   [[nodiscard]] integer size() const;
-
   [[nodiscard]] integer check_index(const any &i, bool allow_end) const;
 
   std::vector<any> values_;

@@ -12,7 +12,7 @@ public:
   int operator()(std::monostate) { throw TypeError(); }
   int operator()(int) { throw TypeError(); }
   int operator()(std::string v) { return v.size(); }
-  int operator()(list v) { return impl::impl_::get(v).size(); }
+  int operator()(sequence v) { return v.end() - v.begin(); }
 };
 
 }  // namespace

@@ -12,7 +12,7 @@ std::string str_(any v);
 std::string str_(list &v) {
   std::string result = "[";
   bool first = true;
-  for (auto &vv : impl::impl_::get(v)) {
+  for (auto &vv : v) {
     if (first) {
       first = false;
     } else {

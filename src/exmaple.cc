@@ -3,7 +3,11 @@
 using namespace kypy;
 
 int main() {
-  any x = list({1, 2, 3, list({4, 5})});
+  auto x = list({1, 2, 3, list({4, 5})});
   print(x);
+
+  x.extend(x);
+  print(x);
+
   return 0;
 }
