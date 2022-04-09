@@ -1,18 +1,20 @@
 #include <gtest/gtest.h>
+#include <ky/py/any.h>
+#include <ky/py/exception.h>
+#include <ky/py/len.h>
 #include <ky/py/list.h>
 #include <ky/py/str.h>
-#include <ky/py/var.h>
 
 #include "impl.h"
 
 using namespace kypy;
 
-std::string to_string(var x) {
+std::string to_string(any x) {
   return std::get<std::string>(impl::impl_::get(str(x)));
 }
 
 #define KYPY_ASSERT_EQ(x, y) kypy_assert_eq(x, y, #x " == " #y)
-void kypy_assert_eq(var x, var y, const char *message) {
+void kypy_assert_eq(any x, any y, const char* message) {
   ASSERT_EQ(x, y) << message << " | " << to_string(x) << " == " << to_string(y);
 }
 
@@ -35,10 +37,10 @@ TEST(kypy, list_slice) {  // NOLINT
 
   KYPY_ASSERT_EQ("[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]", str(l));
 
-  l.slice(1,2) = list();
+  l.slice(1, 2) = list();
   KYPY_ASSERT_EQ("[0, 2, 3, 4, 5, 6, 7, 8, 9]", str(l));
 
-  l.slice(1,1) = list({100});
+  l.slice(1, 1) = list({100});
   KYPY_ASSERT_EQ("[0, 100, 2, 3, 4, 5, 6, 7, 8, 9]", str(l));
 }
 
@@ -56,4 +58,80 @@ TEST(kypy, list_extend) {  // NOLINT
   KYPY_ASSERT_EQ("[1, 2, 3, 4]", str(l));
   l.extend(list({5, 6}));
   KYPY_ASSERT_EQ("[1, 2, 3, 4, 5, 6]", str(l));
+}
+
+TEST(kypy, list_insert) {  // NOLINT
+  list l = {1, 2, 3};
+  l.insert(0, 100);
+  KYPY_ASSERT_EQ("[100, 1, 2, 3]", str(l));
+  l.insert(len(l), 100);
+  KYPY_ASSERT_EQ("[100, 1, 2, 3, 100]", str(l));
+  l.insert(2, 100);
+  KYPY_ASSERT_EQ("[100, 1, 100, 2, 3, 100]", str(l));
+}
+
+TEST(kypy, list_remove) {  // NOLINT
+  list l = {1, 2, 3, 4, 5};
+  l.remove(2);
+  KYPY_ASSERT_EQ("[1, 3, 4, 5]", str(l));
+  ASSERT_THROW(l.remove(6), ValueError);
+}
+
+TEST(kypy, list_pop) {  // NOLINT
+  list l = {1, 2, 3, 4, 5};
+  KYPY_ASSERT_EQ(1, l.pop(0));
+  KYPY_ASSERT_EQ(5, l.pop());
+  KYPY_ASSERT_EQ(3, l.pop(1));
+  KYPY_ASSERT_EQ("[2, 4]", str(l));
+}
+
+TEST(kypy, list_clear) {  // NOLINT
+  list l = {1, 2, 3, 4, 5};
+  l.clear();
+  KYPY_ASSERT_EQ("[]", str(l));
+}
+
+TEST(kypy, list_count) {  // NOLINT
+  list l = {1, 2, 3, 4, 5, 1, 2, 3, 4, 1, 2, 3, 1, 2, 1};
+  KYPY_ASSERT_EQ("5", str(l.count(1)));
+  KYPY_ASSERT_EQ("4", str(l.count(2)));
+  KYPY_ASSERT_EQ("3", str(l.count(3)));
+  KYPY_ASSERT_EQ("2", str(l.count(4)));
+  KYPY_ASSERT_EQ("1", str(l.count(5)));
+  KYPY_ASSERT_EQ("0", str(l.count(6)));
+}
+
+TEST(kypy, list_copy) {  // NOLINT
+  list l = {1, 2, 3, 4, 5};
+  list ll = l.copy();
+  l.clear();
+  KYPY_ASSERT_EQ("[]", str(l));
+  KYPY_ASSERT_EQ("[1, 2, 3, 4, 5]", str(ll));
+}
+
+TEST(kypy, list_reverse) {  // NOLINT
+  list l = {1, 2, 3, 4, 5};
+  l.reverse();
+  KYPY_ASSERT_EQ("[5, 4, 3, 2, 1]", str(l));
+}
+
+TEST(kypy, list_sort) {  // NOLINT
+  list l = {1, 2, 3, 4, 5};
+  l.reverse();
+  KYPY_ASSERT_EQ("[5, 4, 3, 2, 1]", str(l));
+  l.sort();
+  KYPY_ASSERT_EQ("[1, 2, 3, 4, 5]", str(l));
+  l.sort(true);
+  KYPY_ASSERT_EQ("[5, 4, 3, 2, 1]", str(l));
+
+  list ll = {
+      list({1, 2, 3}),
+      list({1, 2}),
+      list({1}),
+  };
+  KYPY_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", str(ll));
+  ll.sort(lambda(x, len(x)));
+  KYPY_ASSERT_EQ("[[1], [1, 2], [1, 2, 3]]", str(ll));
+  ll.sort(lambda(x, len(x)), true);
+  KYPY_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", str(ll));
 }

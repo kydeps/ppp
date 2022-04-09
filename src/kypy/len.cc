@@ -17,6 +17,6 @@ public:
 
 }  // namespace
 
-var len(var x) { return std::visit(len_dispatch(), impl::impl_::get(x)); }
+any len(any x) { return std::visit(len_dispatch(), impl::impl_::get(x)); }
 
 }  // namespace kypy

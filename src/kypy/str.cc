@@ -7,7 +7,7 @@ namespace kypy {
 
 namespace {
 
-std::string str_(var v);
+std::string str_(any v);
 
 std::string str_(list &v) {
   std::string result = "[";
@@ -31,10 +31,12 @@ public:
   std::string operator()(list v) { return str_(v); }
 };
 
-std::string str_(var v) { return std::visit(str_dispatch(), impl::impl_::get(v)); }
+std::string str_(any v) {
+  return std::visit(str_dispatch(), impl::impl_::get(v));
+}
 
 }  // namespace
 
-var str(var x) { return str_(x).c_str(); }
+any str(any x) { return str_(x).c_str(); }
 
 }  // namespace kypy

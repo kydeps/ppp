@@ -248,7 +248,7 @@ TEST(ppp, common) {  // NOLINT
     print(x);
   }
 
-  // NOTE: if we did `var x = ...` then later .append does not work
+  // NOTE: if we did `any x = ...` then later .append does not work
   auto x = list({2, 3, list({5})});
 
   x[1] = 500;
