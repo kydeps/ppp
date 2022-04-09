@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#define lambda(x, y) [](auto x){ return y; }
+#define lambda(x, y) [](auto x) { return y; }
 
 namespace kypy {
 

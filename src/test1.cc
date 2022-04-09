@@ -1,20 +1,20 @@
 #include <gtest/gtest.h>
-#include <ky/py/any.h>
-#include <ky/py/exception.h>
-#include <ky/py/len.h>
-#include <ky/py/list.h>
-#include <ky/py/str.h>
+#include "ky/py/any.h"
+#include "ky/py/exception.h"
+#include "ky/py/len.h"
+#include "ky/py/list.h"
+#include "ky/py/str.h"
 
-#include "impl.h"
+#include "kypy/impl.h"
 
 using namespace kypy;
 
-std::string to_string(any x) {
+std::string to_string(const any& x) {
   return std::get<std::string>(impl::impl_::get(str(x)));
 }
 
 #define KYPY_ASSERT_EQ(x, y) kypy_assert_eq(x, y, #x " == " #y)
-void kypy_assert_eq(any x, any y, const char* message) {
+void kypy_assert_eq(const any& x, const any& y, const char* message) {
   ASSERT_EQ(x, y) << message << " | " << to_string(x) << " == " << to_string(y);
 }
 
