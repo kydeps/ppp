@@ -38,9 +38,6 @@ public:
   void sort(const std::function<any(any)> &key);
   void sort(bool reverse);
   void sort();
-
-private:
-//  explicit list(const list_slice &slice);
 };
 
 }  // namespace kypy

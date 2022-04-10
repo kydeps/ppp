@@ -5,7 +5,7 @@
 
 namespace kypy {
 
-any len(any);
+any len(const any &);
 
 }
 #endif  // PPP_SRC_KYPY_INCLUDE_LEN_H

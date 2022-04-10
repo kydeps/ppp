@@ -2,8 +2,8 @@ add_library(kypy
         include/exception.h
         include/any.h
         any.cc
-        include/str.h
-        str.cc
+        include/string.h
+        string.cc
         include/list.h
         list.cc
         include/len.h

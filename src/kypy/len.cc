@@ -9,14 +9,18 @@ namespace {
 
 class len_dispatch {
 public:
-  int operator()(std::monostate) { throw TypeError(); }
-  int operator()(int) { throw TypeError(); }
-  int operator()(std::string v) { return v.size(); }
-  int operator()(sequence v) { return v.end() - v.begin(); }
+  integer operator()(std::monostate) { throw TypeError(); }
+  integer operator()(integer) { throw TypeError(); }
+  integer operator()(character) { throw TypeError(); }
+  integer operator()(const std::string& v) { return v.size(); }
+  integer operator()(const list& v) { return v.end() - v.begin(); }
+  integer operator()(const string& v) { return v.end() - v.begin(); }
 };
 
 }  // namespace
 
-any len(any x) { return std::visit(len_dispatch(), impl::impl_::get(x)); }
+any len(const any& x) {
+  return std::visit(len_dispatch(), impl::impl_::get(x));
+}
 
 }  // namespace kypy

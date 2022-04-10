@@ -6,9 +6,21 @@
 
 namespace kypy {
 
-void sequence_slice::operator=(sequence&& v) { s_.replace(bi_, ei_, v); }
+void sequence_slice::operator=(const sequence& v) { s_.replace(bi_, ei_, v); }
 
-sequence_slice::sequence_slice(integer bi, integer ei, sequence& s) : bi_(bi), ei_(ei), s_(s) {}
+sequence_slice::operator sequence() const {
+  sequence result;
+  result.impl_->values_.insert(
+      result.impl_->values_.end(),
+      s_.begin() + bi_,
+      s_.end() + ei_);
+  return result;
+}
+
+sequence_slice::sequence_slice(integer bi, integer ei, sequence& s)
+    : bi_(bi),
+      ei_(ei),
+      s_(s) {}
 
 sequence::sequence() : impl_(std::make_shared<impl::sequence_>()) {}
 

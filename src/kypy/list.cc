@@ -60,7 +60,11 @@ any list::count(const any &x) {
   return std::count(impl_->values_.begin(), impl_->values_.end(), x);
 }
 
-//list list::copy() { return list(slice(0)); }
+list list::copy() {
+  auto result = list();
+  result.extend(*this);
+  return result;
+}
 
 void list::reverse() {
   std::reverse(impl_->values_.begin(), impl_->values_.end());

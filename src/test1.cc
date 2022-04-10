@@ -1,21 +1,18 @@
 #include <gtest/gtest.h>
-#include "ky/py/any.h"
-#include "ky/py/exception.h"
-#include "ky/py/len.h"
-#include "ky/py/list.h"
-#include "ky/py/str.h"
+#include <ky/py/any.h>
+#include <ky/py/exception.h>
+#include <ky/py/len.h>
+#include <ky/py/lib.h>
+#include <ky/py/list.h>
+#include <ky/py/string.h>
 
 #include "kypy/impl.h"
 
 using namespace kypy;
 
-std::string to_string(const any& x) {
-  return std::get<std::string>(impl::impl_::get(str(x)));
-}
-
 #define KYPY_ASSERT_EQ(x, y) kypy_assert_eq(x, y, #x " == " #y)
 void kypy_assert_eq(const any& x, const any& y, const char* message) {
-  ASSERT_EQ(x, y) << message << " | " << to_string(x) << " == " << to_string(y);
+  ASSERT_EQ(x, y) << message << " | " << x << " == " << y;
 }
 
 TEST(kypy, var) {  // NOLINT
@@ -102,11 +99,11 @@ TEST(kypy, list_count) {  // NOLINT
 }
 
 TEST(kypy, list_copy) {  // NOLINT
-//  list l = {1, 2, 3, 4, 5};
-//  list ll = l.copy();
-//  l.clear();
-//  KYPY_ASSERT_EQ("[]", str(l));
-//  KYPY_ASSERT_EQ("[1, 2, 3, 4, 5]", str(ll));
+  list l = {1, 2, 3, 4, 5};
+  list ll = l.copy();
+  l.clear();
+  KYPY_ASSERT_EQ("[]", str(l));
+  KYPY_ASSERT_EQ("[1, 2, 3, 4, 5]", str(ll));
 }
 
 TEST(kypy, list_reverse) {  // NOLINT
@@ -131,7 +128,18 @@ TEST(kypy, list_sort) {  // NOLINT
   };
   KYPY_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", str(ll));
   ll.sort(lambda(x, len(x)));
+  //  ll.sort([](auto key) { return len(key); });
   KYPY_ASSERT_EQ("[[1], [1, 2], [1, 2, 3]]", str(ll));
   ll.sort(lambda(x, len(x)), true);
   KYPY_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", str(ll));
+}
+
+TEST(kypy, strings) {  // NOLINT
+  string s = "12345";
+  KYPY_ASSERT_EQ("12345", s);
+  // TODO(kamen): should we have that string(...) below?
+  s.slice(1,3) = string("foo");
+  KYPY_ASSERT_EQ("1foo45", s);
+  s = s + s;
+  KYPY_ASSERT_EQ("1foo451foo45", s);
 }

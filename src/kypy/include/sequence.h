@@ -16,7 +16,9 @@ class sequence;
 
 class sequence_slice final {
 public:
-  void operator=(sequence &&v);
+  void operator=(const sequence &v);
+
+  operator sequence() const;
 
   sequence_slice() = delete;
   sequence_slice(const sequence_slice &) = delete;

@@ -13,16 +13,31 @@ class impl_;
 }  // namespace impl
 
 class list;
+class string;
 
 using integer = intmax_t;
+
+class character {
+public:
+  character(char value) : value_(value) {}
+
+  char value_;
+};
 
 class any final {
 public:
   any();
+
   any(int x);
   any(integer x);
-  any(const char *x);
+
+//  any(character x);
+
   any(const list &x);
+
+  any(const char *x);
+  any(const string &x);
+
   ~any();
 
   friend bool operator==(const any &x, const any &y);
