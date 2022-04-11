@@ -3,6 +3,7 @@
 #include <ky/py/string.h>
 
 #include "impl.h"
+#include "../nastl/include/string.h"
 
 namespace kypy {
 
