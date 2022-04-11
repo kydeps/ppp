@@ -6,6 +6,8 @@
 
 #include <variant>
 
+#define lambda(x, y) [](auto x) { return y; }
+
 namespace ky::nastl {
 
 using integer = intmax_t;
@@ -15,24 +17,34 @@ class visitor;
 class any {
 public:
   any();
-  any(integer v);        // NOLINT(google-explicit-constructor)
+
+  any(int v);      // NOLINT(google-explicit-constructor)
+  any(integer v);  // NOLINT(google-explicit-constructor)
+
   any(const object &v);  // NOLINT(google-explicit-constructor)
 
   any(const any &v);
 
-  any(const char *);
+  any(const char *);         // NOLINT(google-explicit-constructor)
+  any(const std::string &);  // NOLINT(google-explicit-constructor)
 
   void accept(visitor &v) const;
 
   friend bool operator==(const any &x, const any &y);
   friend bool operator<(const any &x, const any &y);
+  friend any operator+(const any &x, const any &y);
 
   friend std::ostream &operator<<(std::ostream &s, const any &x);
 
   template <typename T>
-  std::shared_ptr<T> get() const {
+  std::shared_ptr<T> get_object() const {
     auto v = std::get<std::shared_ptr<object>>(value_);
     return std::dynamic_pointer_cast<T>(v);
+  }
+
+  template <typename T>
+  [[nodiscard]] integer get() const {
+    return std::get<T>(value_);
   }
 
 private:

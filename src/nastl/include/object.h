@@ -5,11 +5,16 @@
 
 namespace ky::nastl {
 
+class any;
 class visitor;
 
 class object {
 public:
   virtual ~object();
+
+private:
+  friend class any;
+  friend bool operator==(const any &x, const any &y);
 
   virtual void accept(visitor &) const = 0;
 

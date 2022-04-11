@@ -8,6 +8,7 @@ public:
   virtual ~impl() = default;
   virtual bool equals(const iterator::impl& other) = 0;
   virtual iterator::impl& increment() = 0;
+  virtual std::unique_ptr<iterator::impl> add(integer delta) = 0;
   virtual any &dereference() = 0;
 };
 

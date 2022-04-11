@@ -13,6 +13,7 @@ class visitor;
 
 class string final : public sequence, public object {
 public:
+  string();
   string(const char *);  // NOLINT(google-explicit-constructor)
   string(const any &);   // NOLINT(google-explicit-constructor)
   string(const string &);
@@ -24,14 +25,16 @@ public:
 
   any &operator[](const integer &) override;
 
+  friend std::ostream &operator<<(std::ostream &, const string &);
+
+private:
   void accept(visitor &) const override;
 
   [[nodiscard]] std::unique_ptr<object> clone() const override;
   [[nodiscard]] bool equals(const object &) const override;
 
-  friend std::ostream &operator<<(std::ostream &, const string &);
+  void replace(integer bIndex, integer eIndex, const sequence &) override;
 
-private:
   friend class ky::nastl::impl;
   std::shared_ptr<std::string> value_;
 };

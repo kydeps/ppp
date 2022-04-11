@@ -22,6 +22,10 @@ public:
     return *this;
   }
 
+  std::unique_ptr<iterator::impl> add(integer delta) override {
+    return std::make_unique<string_iterator>(iterator_ + delta);
+  }
+
   any &dereference() override { throw std::runtime_error("not implemented"); }
 
 private:

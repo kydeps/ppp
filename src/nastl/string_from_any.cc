@@ -1,14 +1,10 @@
 #include <ky/nastl/list.h>
 #include <ky/nastl/string.h>
 
+#include "string_impl.h"
 #include "visitor.h"
 
 namespace ky::nastl {
-
-class impl {
-public:
-  static const std::string &get_value(const string &v) { return *v.value_; }
-};
 
 namespace {
 

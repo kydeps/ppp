@@ -7,8 +7,8 @@ namespace ky::nastl {
 
 class list_iterator final : public iterator::impl {
 public:
-  list_iterator(std::vector<any>::iterator &&iterator)
-      : iterator_(std::move(iterator)) {}
+  explicit list_iterator(std::vector<any>::iterator &&iterator)
+      : iterator_(iterator) {}
 
   ~list_iterator() override = default;
 
@@ -22,13 +22,17 @@ public:
     return *this;
   }
 
+  std::unique_ptr<iterator::impl> add(integer delta) override {
+    return std::make_unique<list_iterator>(iterator_ + delta);
+  }
+
   any &dereference() override { return *iterator_; }
 
 private:
   std::vector<any>::iterator iterator_;
 };
 
-list::list() = default;
+list::list() : values_(std::make_shared<std::vector<any>>()){};
 
 list::list(const list &) = default;
 
@@ -36,6 +40,76 @@ list::list(std::initializer_list<any> values)
     : values_(std::make_shared<std::vector<any>>(values)) {}
 
 list::~list() = default;
+
+void list::append(const any &v) { slice(size()) = list({v}); }
+
+void list::extend(const any &v) {
+  auto vv = v.get_object<sequence>();
+  slice(size()) = *vv;
+}
+
+void list::insert(const any &index, const any &value) {
+  slice(index, index) = list({value});
+}
+
+void list::clear() { slice(0) = list(); }
+
+list list::copy() {
+  auto result = list();
+  result.extend(*this);
+  return result;
+}
+
+void list::reverse() { std::reverse(values_->begin(), values_->end()); }
+
+any list::count(const any &value) { return std::count(begin(), end(), value); }
+
+any list::index(const any &value, const any &bIndex, const any &eIndex) {
+  auto b = values_->begin() + check_index(bIndex, true);
+  auto e = values_->begin() + check_index(eIndex, true);
+  auto c = std::find(b, e, value);
+  if (c == e) {
+    throw value_error();
+  }
+  return c - b;
+}
+
+any list::index(const any &value, const any &bIndex) {
+  return index(value, bIndex, size());
+}
+
+any list::index(const any &value) { return index(value, 0); }
+
+void list::remove(const any &value) {
+  auto i = index(value);
+  slice(i, i + 1) = list();
+}
+
+any list::pop(const any &index) {
+  auto i = check_index(index, false);
+  auto result = (*this)[i];
+  slice(i, i + 1) = list();
+  return result;
+}
+
+any list::pop() { return pop(-1); }
+
+void list::sort(const std::function<any(any)> &key, bool reverse) {
+  auto compare = [key, reverse](const any &x, const any &y) {
+    return (key(x) < key(y)) != reverse;
+  };
+  std::sort(values_->begin(), values_->end(), compare);
+}
+
+void list::sort(const std::function<any(any)> &key) { sort(key, false); }
+
+void list::sort(bool reverse) {
+  sort([](auto key) { return key; }, reverse);
+}
+
+void list::sort() {
+  sort([](auto key) { return key; });
+}
 
 iterator list::begin() const {
   return {std::make_unique<list_iterator>(values_->begin())};
@@ -49,7 +123,9 @@ integer list::size() const {
   return values_->size();  // NOLINT(cppcoreguidelines-narrowing-conversions)
 }
 
-any &list::operator[](const integer &index) { return values_->at(index); }
+any &list::operator[](const integer &index) {
+  return values_->at(check_index(index, false));
+}
 
 void list::accept(visitor &v) const { v.visit(*this); }
 
@@ -60,6 +136,25 @@ std::unique_ptr<object> list::clone() const {
 bool list::equals(const object &other) const {
   const auto &o = dynamic_cast<const list &>(other);
   return *values_ == *o.values_;
+}
+
+void list::replace(integer bIndex, integer eIndex, const sequence &s) {
+  auto &dst = *values_;
+  auto dst_b = dst.begin() + check_index(bIndex, true);
+  auto dst_e = dst.begin() + check_index(eIndex, true);
+  integer dst_s = dst_e - dst_b;
+
+  auto src_b = s.begin();
+  auto src_e = s.end();
+  integer src_s = s.size();
+
+  if (dst_s < src_s) {
+    std::copy(src_b, src_b + dst_s, dst_b);
+    dst.insert(dst_e, src_b + dst_s, src_e);
+  } else {
+    std::copy(src_b, src_e, dst_b);
+    dst.erase(dst_b + src_s, dst_e);
+  }
 }
 
 }  // namespace ky::nastl
