@@ -2,7 +2,6 @@
 #define PPP_SRC_NASTL_INCLUDE_STRING_H
 
 #include <ky/nastl/object.h>
-#include <ky/nastl/sequence.h>
 
 #include <string>
 
@@ -11,7 +10,7 @@ namespace ky::nastl {
 class impl;
 class visitor;
 
-class string final : public sequence, public object {
+class string final : public object {
 public:
   string();
   string(const char *);  // NOLINT(google-explicit-constructor)
@@ -32,6 +31,7 @@ private:
 
   [[nodiscard]] std::unique_ptr<object> clone() const override;
   [[nodiscard]] bool equals(const object &) const override;
+  [[nodiscard]] bool less(const object &) const override;
 
   void replace(integer bIndex, integer eIndex, const sequence &) override;
 

@@ -1,7 +1,7 @@
 #ifndef PPP_SRC_NASTL_INCLUDE_ITERABLE_H
 #define PPP_SRC_NASTL_INCLUDE_ITERABLE_H
 
-#include <ky/nastl/any.h>
+#include <ky/nastl/types.h>
 
 #include <memory>
 
@@ -13,11 +13,6 @@ public:
   iterator(std::unique_ptr<impl>);  // NOLINT(google-explicit-constructor)
   iterator(const iterator &);
   virtual ~iterator();
-
-  //  using value_type = any;
-  //  using pointer = any *;
-  //  using refrence = any &;
-  //  using const_pointer = any *const;
 
   friend bool operator==(const iterator &x, const iterator &y);
   friend iterator &operator++(iterator &x);

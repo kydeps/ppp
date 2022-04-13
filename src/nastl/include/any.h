@@ -3,6 +3,8 @@
 
 #include <ky/nastl/exception.h>
 #include <ky/nastl/object.h>
+#include <ky/nastl/sequence.h>
+#include <ky/nastl/types.h>
 
 #include <variant>
 
@@ -10,11 +12,9 @@
 
 namespace ky::nastl {
 
-using integer = intmax_t;
-
 class visitor;
 
-class any {
+class any final : public sequence {
 public:
   any();
 
@@ -46,6 +46,15 @@ public:
   [[nodiscard]] integer get() const {
     return std::get<T>(value_);
   }
+
+  [[nodiscard]] iterator begin() const override;
+  [[nodiscard]] iterator end() const override;
+
+  any &operator[](const integer &) override;
+  [[nodiscard]] integer size() const override;
+
+protected:
+  void replace(integer bIndex, integer eIndex, const sequence &) override;
 
 private:
   using type = std::variant<std::monostate, integer, std::shared_ptr<object>>;

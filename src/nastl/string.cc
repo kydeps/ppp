@@ -35,6 +35,11 @@ bool string::equals(const object &other) const {
   return *value_ == *o.value_;
 }
 
+bool string::less(const object &other) const {
+  const auto &o = dynamic_cast<const string &>(other);
+  return *value_ < *o.value_;
+}
+
 void string::replace(integer bIndex, integer eIndex, const sequence &s) {
   auto &dst = *value_;
   auto dst_b = dst.begin() + check_index(bIndex, true);

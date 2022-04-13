@@ -133,10 +133,10 @@ TEST(nastl, list_sort) {  // NOLINT
       list({1}),
   };
   NASTL_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", string(ll));
-//  ll.sort(lambda(x, x.size()));
-//  ll.sort([](auto key) { return len(key); });
+  ll.sort(lambda(x, x.size()));
+//  ll.sort([](auto key) { return key.size(); });
   NASTL_ASSERT_EQ("[[1], [1, 2], [1, 2, 3]]", string(ll));
-//  ll.sort(lambda(x, x.size()), true);
+  ll.sort(lambda(x, x.size()), true);
   NASTL_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", string(ll));
 }
 

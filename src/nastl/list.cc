@@ -138,6 +138,15 @@ bool list::equals(const object &other) const {
   return *values_ == *o.values_;
 }
 
+bool list::less(const object &other) const {
+  const auto &o = dynamic_cast<const list &>(other);
+  return std::lexicographical_compare(
+      values_->begin(),
+      values_->end(),
+      o.values_->begin(),
+      o.values_->end());
+}
+
 void list::replace(integer bIndex, integer eIndex, const sequence &s) {
   auto &dst = *values_;
   auto dst_b = dst.begin() + check_index(bIndex, true);

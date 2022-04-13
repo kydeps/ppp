@@ -41,7 +41,9 @@ bool operator==(const any &x, const any &y) {
     explicit V(const any &y) : y_(y) {}
 
     bool operator()(std::monostate) { return any::type() == y_.value_; }
+
     bool operator()(integer x) { return any::type(x) == y_.value_; }
+
     bool operator()(const std::shared_ptr<object> &x) {
       return x->equals(*y_.get_object<object>());
     }
@@ -53,7 +55,27 @@ bool operator==(const any &x, const any &y) {
   return std::visit(V(y), x.value_);
 }
 
-bool operator<(const any &x, const any &y) { throw not_implemented("<"); }
+bool operator<(const any &x, const any &y) {
+  struct V {
+    explicit V(const any &y) : y_(y) {}
+
+    bool operator()(std::monostate) {
+      // None is smaller than anything but itself.
+      return any::type() != y_.value_;
+    }
+
+    bool operator()(integer x) { return any::type(x) < y_.value_; }
+
+    bool operator()(const std::shared_ptr<object> &x) {
+      return x->less(*y_.get_object<object>());
+    }
+
+  private:
+    const any &y_;
+  };
+
+  return std::visit(V(y), x.value_);
+}
 
 any operator+(const any &x, const any &y) {
   class V : public visitor {
@@ -86,6 +108,26 @@ any operator+(const any &x, const any &y) {
 
 std::ostream &operator<<(std::ostream &s, const any &x) {
   return s << string(x);
+}
+
+iterator any::begin() const {
+  return get_object<object>()->begin();
+}
+
+iterator any::end() const {
+  return get_object<object>()->begin();
+}
+
+any &any::operator[](const integer &index) {
+  return get_object<object>()->operator[](index);
+}
+
+integer any::size() const {
+  return get_object<object>()->size();
+}
+
+void any::replace(integer bIndex, integer eIndex, const sequence &values) {
+  get_object<object>()->replace(bIndex, eIndex, values);
 }
 
 }  // namespace ky::nastl

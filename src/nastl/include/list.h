@@ -1,13 +1,13 @@
 #ifndef PPP_SRC_NASTL_INCLUDE_LIST_H
 #define PPP_SRC_NASTL_INCLUDE_LIST_H
 
-#include <ky/nastl/sequence.h>
+#include <ky/nastl/object.h>
 
 #include <vector>
 
 namespace ky::nastl {
 
-class list final : public sequence, public object {
+class list final : public object {
 public:
   list();
   list(const list &);
@@ -48,6 +48,7 @@ private:
 
   [[nodiscard]] std::unique_ptr<object> clone() const override;
   [[nodiscard]] bool equals(const object &) const override;
+  [[nodiscard]] bool less(const object &) const override;
 
   void replace(integer bIndex, integer eIndex, const sequence &) override;
 

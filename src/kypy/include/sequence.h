@@ -16,9 +16,10 @@ class sequence;
 
 class sequence_slice final {
 public:
+  // NOLINTNEXTLINE(misc-unconventional-assign-operator)
   void operator=(const sequence &v);
 
-  operator sequence() const;
+  explicit operator sequence() const;
 
   sequence_slice() = delete;
   sequence_slice(const sequence_slice &) = delete;
