@@ -24,8 +24,15 @@ public:
 class not_implemented : public std::runtime_error {
 public:
   not_implemented() : std::runtime_error("not implemented") {}
-  not_implemented(const std::string &message)
+
+  explicit not_implemented(const std::string &message)
       : std::runtime_error("not implemented : " + message) {}
+};
+
+class io_error : public std::runtime_error {
+public:
+  explicit io_error(const std::string &message)
+      : std::runtime_error("io error : " + message) {}
 };
 
 }  // namespace ky::nastl

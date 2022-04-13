@@ -7,5 +7,6 @@
 #include <ky/nastl/object.h>
 #include <ky/nastl/sequence.h>
 #include <ky/nastl/string.h>
+#include <ky/nastl/file.h>
 
 #endif  // PPP_SRC_NASTL_INCLUDE_NASTL_H

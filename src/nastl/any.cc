@@ -2,7 +2,7 @@
 #include <ky/nastl/list.h>
 #include <ky/nastl/string.h>
 
-#include "string_impl.h"
+#include "impl.h"
 #include "visitor.h"
 
 namespace ky::nastl {

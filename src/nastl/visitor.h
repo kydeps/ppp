@@ -5,15 +5,13 @@
 
 namespace ky::nastl {
 
-class list;
-class string;
-
 class visitor {
 public:
-  virtual void visit() = 0;
-  virtual void visit(integer v) = 0;
-  virtual void visit(const list &v) = 0;
-  virtual void visit(const string &v) = 0;
+  virtual void visit();
+  virtual void visit(integer v);
+  virtual void visit(const list &v);
+  virtual void visit(const string &v);
+  virtual void visit(const file &v);
 };
 
 }  // namespace ky::nastl

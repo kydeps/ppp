@@ -11,6 +11,7 @@ class any;
 class object;
 class list;
 class string;
+class file;
 
 }
 

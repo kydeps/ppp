@@ -5,6 +5,8 @@
 
 #include <string>
 
+// find inspiration at https://docs.python.org/3/library/stdtypes.html?highlight=str#str
+
 namespace ky::nastl {
 
 class impl;
@@ -38,6 +40,8 @@ private:
   friend class ky::nastl::impl;
   std::shared_ptr<std::string> value_;
 };
+
+void print(const any &);
 
 }  // namespace ky::nastl
 

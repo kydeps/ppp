@@ -10,6 +10,8 @@ add_library(nastl
         string.cc
         string_iter.cc
         string_from_any.cc
+        file.cc
+        visitor.cc
         )
 target_link_libraries(nastl
         PRIVATE glog::glog
@@ -17,3 +19,4 @@ target_link_libraries(nastl
 kydepspackagelibrarytarget(nastl "ky/nastl")
 
 add_subdirectory(test)
+add_subdirectory(examples)
