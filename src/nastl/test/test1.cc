@@ -134,7 +134,7 @@ TEST(nastl, list_sort) {  // NOLINT
   };
   NASTL_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", string(ll));
   ll.sort(lambda(x, x.size()));
-//  ll.sort([](auto key) { return key.size(); });
+  //  ll.sort([](auto key) { return key.size(); });
   NASTL_ASSERT_EQ("[[1], [1, 2], [1, 2, 3]]", string(ll));
   ll.sort(lambda(x, x.size()), true);
   NASTL_ASSERT_EQ("[[1, 2, 3], [1, 2], [1]]", string(ll));
@@ -144,9 +144,23 @@ TEST(nastl, strings) {  // NOLINT
   string s = "12345";
   NASTL_ASSERT_EQ("12345", s);
   // TODO(kamen): should we have that string(...) below?
-  s.slice(1,3) = string("foo");
+  s.slice(1, 3) = string("foo");
   NASTL_ASSERT_EQ("1foo45", s);
   any ss = s;
   ss = ss + ss;
   NASTL_ASSERT_EQ("1foo451foo45", ss);
+}
+
+TEST(nastl, string_split) {  // NOLINT
+  NASTL_ASSERT_EQ(string("1,2,3").split(","), list({"1", "2", "3"}));
+  NASTL_ASSERT_EQ(string("1,,3").split(","), list({"1", "", "3"}));
+  NASTL_ASSERT_EQ(string("").split(","), list({""}));
+  NASTL_ASSERT_EQ(string("1<>2<>3").split("<>"), list({"1", "2", "3"}));
+  NASTL_ASSERT_EQ(string("1<>2<>3").split("<>", 1), list({"1", "2<>3"}));
+}
+
+TEST(nastl, string_strip) {  // NOLINT
+  NASTL_ASSERT_EQ(string("  123   ").strip(" "), "123");
+  NASTL_ASSERT_EQ(string("  123 <  ").strip(" "), "123 <");
+  NASTL_ASSERT_EQ(string("  123 <  ").strip(" <"), "123");
 }

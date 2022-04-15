@@ -8,7 +8,8 @@ int main() {
   auto f = file("comma-separated-values-file-1.csv");
 
   for (auto line : f) {
-    print(line);
+    auto terms = string(string(line).strip("\n")).split(",");
+    print(terms);
   }
 
   return 0;

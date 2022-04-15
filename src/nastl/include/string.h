@@ -1,7 +1,7 @@
 #ifndef PPP_SRC_NASTL_INCLUDE_STRING_H
 #define PPP_SRC_NASTL_INCLUDE_STRING_H
 
-#include <ky/nastl/object.h>
+#include <ky/nastl/any.h>
 
 #include <string>
 
@@ -19,6 +19,12 @@ public:
   string(const any &);   // NOLINT(google-explicit-constructor)
   string(const string &);
   ~string() override;
+
+  [[nodiscard]] any split(const any &sep, const any &max_splits) const;
+  [[nodiscard]] any split(const any &sep) const;
+
+  [[nodiscard]] any strip(const any &chars) const;
+  [[nodiscard]] any strip() const;
 
   [[nodiscard]] iterator begin() const override;
   [[nodiscard]] iterator end() const override;

@@ -7,9 +7,11 @@ add_library(nastl
         iterable.cc
         sequence.cc
         list.cc
+        to_std_string.cc
         string.cc
         string_iter.cc
         string_from_any.cc
+        string_lib.cc
         file.cc
         visitor.cc
         )
