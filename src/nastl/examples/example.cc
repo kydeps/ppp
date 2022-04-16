@@ -9,9 +9,21 @@ int main() {
       "/Users/kamen/work/ppp/src/nastl/examples/"
       "comma-separated-values-file-1.csv";
 
+  // results = []
+  auto results = list();
+  // with open(filename) as f:
+  //  for line in f:
+  //    ...
   for (auto line : file(filename)) {
+    // terms = line.strip('\n').split(',')
     auto terms = line->strip("\n")->split(",");
-    print(terms);
+    results.append(terms);
+  }
+  // results[10:] = []
+  results.slice(10) = list();
+  // for result in results:
+  for (auto result : results) {
+    print(result);
   }
 
   return 0;

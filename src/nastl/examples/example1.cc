@@ -5,6 +5,7 @@
 class A {
 public:
   int add(int x, int y) const { return x + y; }
+  int sub(int x, int y) const { return x - y; }
   std::string name(const std::string &m) const { return m + ": A"; }
 };
 
@@ -18,8 +19,10 @@ class C {
 public:
   explicit C(A a) : data_(a) {}
   explicit C(B b) : data_(b) {}
+  explicit C(int x) : data_(x) {}
 
   int add(int x, int y) const;
+  int sub(int x, int y) const;
   int mul(int x, int y) const;
   std::string name(const std::string &m) const;
 
@@ -53,19 +56,19 @@ public:
         data);                                                             \
   }
 
-#define DISPATCH(v, method, ...) \
-  dispatch_##method<decltype(method(__VA_ARGS__))>(v, __VA_ARGS__)
+#define DISPATCH(method, ...) \
+  dispatch_##method<decltype(method(__VA_ARGS__))>(data_, __VA_ARGS__)
 
 DECLARE(add)
+DECLARE(sub)
 DECLARE(mul)
 DECLARE(name)
 
-int C::add(int x, int y) const { return DISPATCH(data_, add, x, y); }
-int C::mul(int x, int y) const { return DISPATCH(data_, mul, x, y); }
+int C::add(int x, int y) const { return DISPATCH(add, x, y); }
+int C::sub(int x, int y) const { return DISPATCH(sub, x, y); }
+int C::mul(int x, int y) const { return DISPATCH(mul, x, y); }
 
-std::string C::name(const std::string &m) const {
-  return DISPATCH(data_, name, m);
-}
+std::string C::name(const std::string &m) const { return DISPATCH(name, m); }
 
 #define TRY(x)                          \
   try {                                 \
@@ -77,11 +80,18 @@ std::string C::name(const std::string &m) const {
 int main() {
   C c1(A{});
   C c2(B{});
+  C c3(0);
 
   TRY(std::cout << c1.add(2, 3) << std::endl);
   TRY(std::cout << c2.add(2, 3) << std::endl);
+  TRY(std::cout << c3.add(2, 3) << std::endl);
+  TRY(std::cout << c1.sub(2, 3) << std::endl);
+  TRY(std::cout << c2.sub(2, 3) << std::endl);
+  TRY(std::cout << c3.sub(2, 3) << std::endl);
   TRY(std::cout << c1.mul(2, 3) << std::endl);
   TRY(std::cout << c2.mul(2, 3) << std::endl);
+  TRY(std::cout << c3.mul(2, 3) << std::endl);
   TRY(std::cout << c1.name("kamen") << std::endl);
   TRY(std::cout << c2.name("kamen") << std::endl);
+  TRY(std::cout << c3.name("kamen") << std::endl);
 }
