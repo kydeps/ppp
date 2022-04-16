@@ -2,6 +2,8 @@
 
 #include <ky/nastl/file.h>
 
+#include <cstring>
+
 #include "impl.h"
 #include "iterator_impl.h"
 #include "visitor.h"

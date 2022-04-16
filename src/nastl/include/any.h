@@ -58,6 +58,7 @@ protected:
 
 private:
   using type = std::variant<std::monostate, integer, std::shared_ptr<object>>;
+
   type value_;
 };
 

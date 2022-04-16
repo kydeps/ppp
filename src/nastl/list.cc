@@ -32,7 +32,7 @@ private:
   std::vector<any>::iterator iterator_;
 };
 
-list::list() : values_(std::make_shared<std::vector<any>>()){};
+list::list() : values_(std::make_shared<std::vector<any>>()) {}
 
 list::list(const list &) = default;
 
@@ -62,7 +62,7 @@ list list::copy() {
 
 void list::reverse() { std::reverse(values_->begin(), values_->end()); }
 
-any list::count(const any &value) { return std::count(begin(), end(), value); }
+any list::count(const any &value) const { return std::count(begin(), end(), value); }
 
 any list::index(const any &value, const any &bIndex, const any &eIndex) {
   auto b = values_->begin() + check_index(bIndex, true);

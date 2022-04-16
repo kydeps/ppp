@@ -9,7 +9,7 @@ namespace ky::nastl {
 
 class file final : public object {
 public:
-  file(const any &filename);
+  explicit file(const any &filename);
   file(const any &filename, const any &mode);
   ~file() override;
 

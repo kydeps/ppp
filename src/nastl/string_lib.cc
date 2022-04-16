@@ -2,6 +2,8 @@
 #include <ky/nastl/list.h>
 #include <ky/nastl/string.h>
 
+#include <limits>
+
 #include "to_std_string.h"
 
 namespace ky::nastl {
@@ -50,8 +52,6 @@ any string::strip(const any &chars) const {
   }
 }
 
-any string::strip() const {
-  return strip("\n\t ");
-}
+any string::strip() const { return strip("\n\t "); }
 
 }  // namespace ky::nastl

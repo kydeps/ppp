@@ -2,8 +2,12 @@
 #include <ky/nastl/list.h>
 #include <ky/nastl/string.h>
 
+#include <type_traits>
+
 #include "impl.h"
 #include "visitor.h"
+
+#include "variant.h"
 
 namespace ky::nastl {
 
@@ -17,9 +21,9 @@ any::any(const object &v) : value_(v.clone()) {}
 
 any::any(const any &v) = default;
 
-any::any(const char *v) : any(string(v)){};
+any::any(const char *v) : any(string(v)) {}
 
-any::any(const std::string &v) : any(string(v.c_str())){};
+any::any(const std::string &v) : any(string(v.c_str())) {}
 
 void any::accept(visitor &v) const {
   struct V {
@@ -110,21 +114,15 @@ std::ostream &operator<<(std::ostream &s, const any &x) {
   return s << string(x);
 }
 
-iterator any::begin() const {
-  return get_object<object>()->begin();
-}
+iterator any::begin() const { return get_object<object>()->begin(); }
 
-iterator any::end() const {
-  return get_object<object>()->begin();
-}
+iterator any::end() const { return get_object<object>()->begin(); }
 
 any &any::operator[](const integer &index) {
   return get_object<object>()->operator[](index);
 }
 
-integer any::size() const {
-  return get_object<object>()->size();
-}
+integer any::size() const { return get_object<object>()->size(); }
 
 void any::replace(integer bIndex, integer eIndex, const sequence &values) {
   get_object<object>()->replace(bIndex, eIndex, values);

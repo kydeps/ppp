@@ -18,7 +18,7 @@ add_library(nastl
 target_link_libraries(nastl
         PRIVATE glog::glog
         )
-kydepspackagelibrarytarget(nastl "ky/nastl")
+KyDepsPackageLibraryTarget(nastl "ky/nastl")
 
 add_subdirectory(test)
 add_subdirectory(examples)

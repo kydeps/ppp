@@ -4,6 +4,7 @@
 #include <ky/nastl/object.h>
 
 #include <vector>
+#include <functional>
 
 namespace ky::nastl {
 
@@ -23,7 +24,7 @@ public:
   list copy();
   void reverse();
 
-  any count(const any &value);
+  any count(const any &value) const;
   any index(const any &value, const any &bIndex, const any &eIndex);
   any index(const any &value, const any &bIndex);
   any index(const any &value);

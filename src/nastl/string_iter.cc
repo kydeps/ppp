@@ -8,7 +8,7 @@ namespace {
 
 class string_iterator final : public iterator::impl {
 public:
-  string_iterator(std::string::iterator &&iterator) : iterator_(iterator) {}
+  explicit string_iterator(std::string::iterator &&iterator) : iterator_(iterator) {}
 
   ~string_iterator() override = default;
 
