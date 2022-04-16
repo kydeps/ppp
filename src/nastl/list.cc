@@ -54,7 +54,7 @@ void list::insert(const any &index, const any &value) {
 
 void list::clear() { slice(0) = list(); }
 
-list list::copy() {
+any list::copy() {
   auto result = list();
   result.extend(*this);
   return result;
@@ -62,9 +62,11 @@ list list::copy() {
 
 void list::reverse() { std::reverse(values_->begin(), values_->end()); }
 
-any list::count(const any &value) const { return std::count(begin(), end(), value); }
+any list::count(const any &value) const {
+  return std::count(begin(), end(), value);
+}
 
-any list::index(const any &value, const any &bIndex, const any &eIndex) {
+any list::index(const any &value, const any &bIndex, const any &eIndex) const {
   auto b = values_->begin() + check_index(bIndex, true);
   auto e = values_->begin() + check_index(eIndex, true);
   auto c = std::find(b, e, value);
@@ -73,12 +75,6 @@ any list::index(const any &value, const any &bIndex, const any &eIndex) {
   }
   return c - b;
 }
-
-any list::index(const any &value, const any &bIndex) {
-  return index(value, bIndex, size());
-}
-
-any list::index(const any &value) { return index(value, 0); }
 
 void list::remove(const any &value) {
   auto i = index(value);
@@ -92,23 +88,11 @@ any list::pop(const any &index) {
   return result;
 }
 
-any list::pop() { return pop(-1); }
-
 void list::sort(const std::function<any(any)> &key, bool reverse) {
   auto compare = [key, reverse](const any &x, const any &y) {
     return (key(x) < key(y)) != reverse;
   };
   std::sort(values_->begin(), values_->end(), compare);
-}
-
-void list::sort(const std::function<any(any)> &key) { sort(key, false); }
-
-void list::sort(bool reverse) {
-  sort([](auto key) { return key; }, reverse);
-}
-
-void list::sort() {
-  sort([](auto key) { return key; });
 }
 
 iterator list::begin() const {

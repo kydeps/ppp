@@ -5,13 +5,12 @@
 using namespace ky::nastl;
 
 int main() {
-  //  auto f = file("comma-separated-values-file-1.csv");
-  auto f = file(
+  auto filename =
       "/Users/kamen/work/ppp/src/nastl/examples/"
-      "comma-separated-values-file-1.csv");
+      "comma-separated-values-file-1.csv";
 
-  for (auto line : f) {
-    auto terms = string(string(line).strip("\n")).split(",");
+  for (auto line : file(filename)) {
+    auto terms = line->strip("\n")->split(",");
     print(terms);
   }
 

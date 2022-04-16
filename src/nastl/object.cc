@@ -2,33 +2,63 @@
 #include <ky/nastl/object.h>
 
 #include <iostream>
+#include <limits>
 
 namespace ky::nastl {
 
+#define NOT_IMPLEMENTED()                                             \
+  throw std::runtime_error(                                           \
+      std::string() + typeid(*this).name() + " does not implement " + \
+      __PRETTY_FUNCTION__)
+
 object::~object() = default;
 
-iterator object::begin() const { throw not_implemented("begin"); }
+iterator object::begin() const { NOT_IMPLEMENTED(); }
+iterator object::end() const { NOT_IMPLEMENTED(); }
+integer object::size() const { NOT_IMPLEMENTED(); }
+any &object::operator[](const integer &) { NOT_IMPLEMENTED(); }
+any object::split(const any &, const any &) const { NOT_IMPLEMENTED(); }
+any object::strip(const any &chars) const { NOT_IMPLEMENTED(); }
+void object::append(const any &) { NOT_IMPLEMENTED(); }
+void object::extend(const any &) { NOT_IMPLEMENTED(); }
+void object::insert(const any &, const any &) { NOT_IMPLEMENTED(); }
+void object::clear() { NOT_IMPLEMENTED(); }
+any object::copy() { NOT_IMPLEMENTED(); }
+void object::reverse() { NOT_IMPLEMENTED(); }
+any object::count(const any &) const { NOT_IMPLEMENTED(); }
+any object::index(const any &, const any &, const any &) const {
+  NOT_IMPLEMENTED();
+}
+void object::remove(const any &) { NOT_IMPLEMENTED(); }
+any object::pop(const any &) { NOT_IMPLEMENTED(); }
+void object::sort(const std::function<any(any)> &, bool) { NOT_IMPLEMENTED(); }
+void object::replace(integer, integer, const sequence &) { NOT_IMPLEMENTED(); }
+std::unique_ptr<object> object::clone() const { NOT_IMPLEMENTED(); }
+bool object::equals(const object &) const { NOT_IMPLEMENTED(); }
+bool object::less(const object &) const { NOT_IMPLEMENTED(); }
 
-iterator object::end() const { throw not_implemented("begin"); }
-
-any &object::operator[](const integer &) { throw not_implemented("[]"); }
-
-integer object::size() const { throw not_implemented("size"); }
-
-void object::replace(integer bIndex, integer eIndex, const sequence &sequence) {
-  throw not_implemented("replace");
+any object::split(const any &index) const {
+  return split(index, std::numeric_limits<integer>::max());
 }
 
-std::unique_ptr<object> object::clone() const {
-  throw not_implemented("clone");
+any object::strip() const { return strip("\n\t "); }
+
+any object::index(const any &value, const any &bIndex) const {
+  return index(value, bIndex, size());
 }
 
-bool object::equals(const object &) const {
-  throw not_implemented("equal");
+any object::index(const any &value) const { return index(value, 0); }
+
+any object::pop() { return pop(-1); }
+
+void object::sort(const std::function<any(any)> &key) { sort(key, false); }
+
+void object::sort(bool reverse) {
+  sort([](auto key) { return key; }, reverse);
 }
 
-bool object::less(const object &) const {
-  throw not_implemented("less");
+void object::sort() {
+  sort([](auto key) { return key; });
 }
 
 }  // namespace ky::nastl

@@ -33,10 +33,6 @@ any string::split(const any &sep, const any &max_splits) const {
   return result;
 }
 
-any string::split(const any &sep) const {
-  return split(sep, std::numeric_limits<integer>::max());
-}
-
 any string::strip(const any &chars) const {
   auto c = to_std_string(chars);
 
@@ -51,7 +47,5 @@ any string::strip(const any &chars) const {
     return value.substr(fIndex, eIndex - fIndex + 1);
   }
 }
-
-any string::strip() const { return strip("\n\t "); }
 
 }  // namespace ky::nastl

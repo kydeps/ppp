@@ -106,7 +106,7 @@ TEST(nastl, list_count) {  // NOLINT
 
 TEST(nastl, list_copy) {  // NOLINT
   list l = {1, 2, 3, 4, 5};
-  list ll = l.copy();
+  auto ll = l.copy();
   l.clear();
   NASTL_ASSERT_EQ("[]", string(l));
   NASTL_ASSERT_EQ("[1, 2, 3, 4, 5]", string(ll));

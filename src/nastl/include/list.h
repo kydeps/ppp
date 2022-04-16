@@ -3,8 +3,8 @@
 
 #include <ky/nastl/object.h>
 
-#include <vector>
 #include <functional>
+#include <vector>
 
 namespace ky::nastl {
 
@@ -15,28 +15,26 @@ public:
   list(std::initializer_list<any>);
   ~list() override;
 
-  void append(const any &);
-  void extend(const any &);
-  void insert(const any &index, const any &value);
+  void append(const any &) override;
+  void extend(const any &) override;
+  void insert(const any &index, const any &value) override;
 
-  void clear();
+  void clear() override;
 
-  list copy();
-  void reverse();
+  any copy() override;
+  void reverse() override;
 
-  any count(const any &value) const;
-  any index(const any &value, const any &bIndex, const any &eIndex);
-  any index(const any &value, const any &bIndex);
-  any index(const any &value);
-  void remove(const any &value);
+  any count(const any &value) const override;
+  any index(const any &value, const any &bIndex, const any &eIndex)
+      const override;
+  using object::index;
+  void remove(const any &value) override;
 
-  any pop(const any &index);
-  any pop();
+  any pop(const any &index) override;
+  using object::pop;
 
-  void sort(const std::function<any(any)> &key, bool reverse);
-  void sort(const std::function<any(any)> &key);
-  void sort(bool reverse);
-  void sort();
+  void sort(const std::function<any(any)> &key, bool reverse) override;
+  using object::sort;
 
   [[nodiscard]] iterator begin() const override;
   [[nodiscard]] iterator end() const override;

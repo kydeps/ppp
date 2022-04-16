@@ -25,10 +25,10 @@ public:
   ~string() override;
 
   [[nodiscard]] any split(const any &sep, const any &max_splits) const;
-  [[nodiscard]] any split(const any &sep) const;
+  using object::split;
 
   [[nodiscard]] any strip(const any &chars) const;
-  [[nodiscard]] any strip() const;
+  using object::strip;
 
   [[nodiscard]] iterator begin() const override;
   [[nodiscard]] iterator end() const override;

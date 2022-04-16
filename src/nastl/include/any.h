@@ -6,6 +6,7 @@
 #include <ky/nastl/sequence.h>
 #include <ky/nastl/types.h>
 
+#include <functional>
 #include <variant>
 
 #define lambda(x, y) [](auto x) { return y; }
@@ -47,11 +48,21 @@ public:
     return std::get<T>(value_);
   }
 
+  // sequence and iterable
+
   [[nodiscard]] iterator begin() const override;
   [[nodiscard]] iterator end() const override;
+  [[nodiscard]] integer size() const override;
 
   any &operator[](const integer &) override;
-  [[nodiscard]] integer size() const override;
+
+  std::shared_ptr<object> operator ->() {
+    return get_object<object>();
+  }
+
+//  object &operator *() {
+//    return get_object<object>();
+//  }
 
 protected:
   void replace(integer bIndex, integer eIndex, const sequence &) override;
