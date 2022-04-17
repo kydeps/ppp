@@ -28,9 +28,20 @@ public:
       result += result_;
     }
     result_ = result + "]";
-  };
+  }
 
-  void visit(const string &v) override { result_ = get_value(v); };
+  void visit(const string &v) override {
+    result_.clear();
+    result_.push_back('"');
+    for (const auto &c : get_value(v)) {
+      if (c == '"') {
+        result_ += R"(\")";
+      } else {
+        result_.push_back(c);
+      }
+    }
+    result_.push_back('"');
+  }
 };
 
 std::string to_std_string(const any &v) {

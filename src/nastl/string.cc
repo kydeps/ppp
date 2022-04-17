@@ -15,20 +15,20 @@ string::string(const string &) = default;
 
 string::~string() = default;
 
+any string::copy() const {
+  return *value_;
+}
+
 integer string::size() const {
   // NOLINTNEXTLINE(cppcoreguidelines-narrowing-conversions)
   return value_->size();
 }
 
-any &string::operator[](const integer &index) {
+any &string::operator[](const integer &index) const {
   throw std::runtime_error("not implemented");
 }
 
 void string::accept(visitor &v) const { v.visit(*this); }
-
-std::unique_ptr<object> string::clone() const {
-  return std::make_unique<string>(*this);
-}
 
 bool string::equals(const object &other) const {
   const auto &o = dynamic_cast<const string &>(other);
@@ -38,6 +38,10 @@ bool string::equals(const object &other) const {
 bool string::less(const object &other) const {
   const auto &o = dynamic_cast<const string &>(other);
   return *value_ < *o.value_;
+}
+
+std::unique_ptr<object> string::clone() const {
+  return std::make_unique<string>(*this);
 }
 
 void string::replace(integer bIndex, integer eIndex, const sequence &s) {

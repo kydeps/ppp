@@ -16,14 +16,14 @@ object::~object() = default;
 iterator object::begin() const { NOT_IMPLEMENTED(); }
 iterator object::end() const { NOT_IMPLEMENTED(); }
 integer object::size() const { NOT_IMPLEMENTED(); }
-any &object::operator[](const integer &) { NOT_IMPLEMENTED(); }
+any &object::operator[](const integer &) const { NOT_IMPLEMENTED(); }
 any object::split(const any &, const any &) const { NOT_IMPLEMENTED(); }
 any object::strip(const any &chars) const { NOT_IMPLEMENTED(); }
 void object::append(const any &) { NOT_IMPLEMENTED(); }
 void object::extend(const any &) { NOT_IMPLEMENTED(); }
 void object::insert(const any &, const any &) { NOT_IMPLEMENTED(); }
 void object::clear() { NOT_IMPLEMENTED(); }
-any object::copy() { NOT_IMPLEMENTED(); }
+any object::copy() const { NOT_IMPLEMENTED(); }
 void object::reverse() { NOT_IMPLEMENTED(); }
 any object::count(const any &) const { NOT_IMPLEMENTED(); }
 any object::index(const any &, const any &, const any &) const {
@@ -33,9 +33,9 @@ void object::remove(const any &) { NOT_IMPLEMENTED(); }
 any object::pop(const any &) { NOT_IMPLEMENTED(); }
 void object::sort(const std::function<any(any)> &, bool) { NOT_IMPLEMENTED(); }
 void object::replace(integer, integer, const sequence &) { NOT_IMPLEMENTED(); }
-std::unique_ptr<object> object::clone() const { NOT_IMPLEMENTED(); }
 bool object::equals(const object &) const { NOT_IMPLEMENTED(); }
 bool object::less(const object &) const { NOT_IMPLEMENTED(); }
+std::unique_ptr<object> object::clone() const { NOT_IMPLEMENTED(); }
 
 any object::split(const any &index) const {
   return split(index, std::numeric_limits<integer>::max());

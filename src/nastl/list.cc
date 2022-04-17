@@ -44,8 +44,7 @@ list::~list() = default;
 void list::append(const any &v) { slice(size()) = list({v}); }
 
 void list::extend(const any &v) {
-  auto vv = v.get_object<sequence>();
-  slice(size()) = *vv;
+  slice(size()) = v.as_object();
 }
 
 void list::insert(const any &index, const any &value) {
@@ -54,7 +53,7 @@ void list::insert(const any &index, const any &value) {
 
 void list::clear() { slice(0) = list(); }
 
-any list::copy() {
+any list::copy() const {
   auto result = list();
   result.extend(*this);
   return result;
@@ -107,15 +106,11 @@ integer list::size() const {
   return values_->size();  // NOLINT(cppcoreguidelines-narrowing-conversions)
 }
 
-any &list::operator[](const integer &index) {
+any &list::operator[](const integer &index) const {
   return values_->at(check_index(index, false));
 }
 
 void list::accept(visitor &v) const { v.visit(*this); }
-
-std::unique_ptr<object> list::clone() const {
-  return std::make_unique<list>(*this);
-}
 
 bool list::equals(const object &other) const {
   const auto &o = dynamic_cast<const list &>(other);
@@ -129,6 +124,10 @@ bool list::less(const object &other) const {
       values_->end(),
       o.values_->begin(),
       o.values_->end());
+}
+
+std::unique_ptr<object> list::clone() const {
+  return std::make_unique<list>(*this);
 }
 
 void list::replace(integer bIndex, integer eIndex, const sequence &s) {

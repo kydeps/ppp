@@ -12,7 +12,7 @@ public:
   static const std::string &get_value(const string &v) { return *v.value_; }
 
   static const std::string &get_std_string(const any &v) {
-    return get_value(*v.get_object<string>());
+    return get_value(dynamic_cast<const string &>(v.as_object()));
   }
 
   static const char *get_c_str(const any &v) {

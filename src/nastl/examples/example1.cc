@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <variant>
+#include <functional>
 
 class A {
 public:
@@ -20,6 +21,7 @@ public:
   explicit C(A a) : data_(a) {}
   explicit C(B b) : data_(b) {}
   explicit C(int x) : data_(x) {}
+  explicit C(float x) : data_(x) {}
 
   int add(int x, int y) const;
   int sub(int x, int y) const;
@@ -27,7 +29,7 @@ public:
   std::string name(const std::string &m) const;
 
 public:
-  using data_t = std::variant<A, B, int>;
+  using data_t = std::variant<A, B, int, float>;
 
   data_t data_;
 };
@@ -94,4 +96,7 @@ int main() {
   TRY(std::cout << c1.name("kamen") << std::endl);
   TRY(std::cout << c2.name("kamen") << std::endl);
   TRY(std::cout << c3.name("kamen") << std::endl);
+
+  auto fp = &C::add;
+  TRY(std::cout << std::invoke(fp, c1, 3, 4) << std::endl);
 }

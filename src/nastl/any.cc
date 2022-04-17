@@ -5,9 +5,8 @@
 #include <type_traits>
 
 #include "impl.h"
-#include "visitor.h"
-
 #include "variant.h"
+#include "visitor.h"
 
 namespace ky::nastl {
 
@@ -49,7 +48,7 @@ bool operator==(const any &x, const any &y) {
     bool operator()(integer x) { return any::type(x) == y_.value_; }
 
     bool operator()(const std::shared_ptr<object> &x) {
-      return x->equals(*y_.get_object<object>());
+      return x->equals(y_.as_object());
     }
 
   private:
@@ -71,7 +70,7 @@ bool operator<(const any &x, const any &y) {
     bool operator()(integer x) { return any::type(x) < y_.value_; }
 
     bool operator()(const std::shared_ptr<object> &x) {
-      return x->less(*y_.get_object<object>());
+      return x->less(y_.as_object());
     }
 
   private:
@@ -114,18 +113,13 @@ std::ostream &operator<<(std::ostream &s, const any &x) {
   return s << string(x);
 }
 
-iterator any::begin() const { return get_object<object>()->begin(); }
-
-iterator any::end() const { return get_object<object>()->begin(); }
-
-any &any::operator[](const integer &index) {
-  return get_object<object>()->operator[](index);
+std::shared_ptr<object> any::operator->() const {
+  return std::get<std::shared_ptr<object>>(value_);
 }
 
-integer any::size() const { return get_object<object>()->size(); }
+any &any::operator[](const integer &index) const { return as_object()[index]; }
 
-void any::replace(integer bIndex, integer eIndex, const sequence &values) {
-  get_object<object>()->replace(bIndex, eIndex, values);
-}
+iterator any::begin() const { return as_object().begin(); }
+iterator any::end() const { return as_object().end(); }
 
 }  // namespace ky::nastl

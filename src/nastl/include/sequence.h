@@ -28,7 +28,7 @@ private:
 
 class sequence : public iterable {
 public:
-  virtual any &operator[](const integer &) = 0;
+  virtual any &operator[](const integer &) const = 0;
 
   slice_ slice(const any &bIndex, const any &eIndex);
   slice_ slice(const any &);

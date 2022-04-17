@@ -22,7 +22,8 @@ int main() {
   // results[10:] = []
   results.slice(10) = list();
   // for result in results:
-  for (auto result : results) {
+  any r = results;
+  for (auto result : r) {
     print(result);
   }
 

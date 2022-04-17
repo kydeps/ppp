@@ -5,11 +5,12 @@
 #include <limits>
 
 #include "to_std_string.h"
+#include "impl.h"
 
 namespace ky::nastl {
 
 any string::split(const any &sep, const any &max_splits) const {
-  auto separator = to_std_string(sep);
+  auto separator = *sep.as_object<string>().value_;
   auto splits = max_splits.get<integer>();
 
   auto value = *value_;
@@ -34,7 +35,7 @@ any string::split(const any &sep, const any &max_splits) const {
 }
 
 any string::strip(const any &chars) const {
-  auto c = to_std_string(chars);
+  auto c = *chars.as_object<string>().value_;;
 
   auto value = *value_;
 

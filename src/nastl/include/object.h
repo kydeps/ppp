@@ -23,7 +23,7 @@ public:
   [[nodiscard]] iterator end() const override;
   [[nodiscard]] integer size() const override;
 
-  any &operator[](const integer &integer1) override;
+  any &operator[](const integer &) const override;
 
   // string-like
 
@@ -41,7 +41,7 @@ public:
 
   virtual void clear();
 
-  virtual any copy();
+  virtual any copy() const;
   virtual void reverse();
 
   virtual any count(const any &value) const;
@@ -69,10 +69,9 @@ private:
 
   virtual void accept(visitor &) const = 0;
 
-  // TODO: remove
-  [[nodiscard]] virtual std::unique_ptr<object> clone() const;
-  [[nodiscard]] virtual bool equals(const object &) const;
-  [[nodiscard]] virtual bool less(const object &) const;
+  virtual bool equals(const object &) const;
+  virtual bool less(const object &) const;
+  virtual std::unique_ptr<object> clone() const;
 };
 
 }  // namespace ky::nastl

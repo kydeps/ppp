@@ -24,26 +24,28 @@ public:
   string(const string &);
   ~string() override;
 
-  [[nodiscard]] any split(const any &sep, const any &max_splits) const;
+  any copy() const override;
+
+  [[nodiscard]] any split(const any &sep, const any &max_splits) const override;
   using object::split;
 
-  [[nodiscard]] any strip(const any &chars) const;
+  [[nodiscard]] any strip(const any &chars) const override;
   using object::strip;
 
   [[nodiscard]] iterator begin() const override;
   [[nodiscard]] iterator end() const override;
   [[nodiscard]] integer size() const override;
 
-  any &operator[](const integer &) override;
+  any &operator[](const integer &) const override;
 
   friend std::ostream &operator<<(std::ostream &, const string &);
 
 private:
   void accept(visitor &) const override;
 
-  [[nodiscard]] std::unique_ptr<object> clone() const override;
   [[nodiscard]] bool equals(const object &) const override;
   [[nodiscard]] bool less(const object &) const override;
+  [[nodiscard]] virtual std::unique_ptr<object> clone() const;
 
   void replace(integer bIndex, integer eIndex, const sequence &) override;
 

@@ -21,12 +21,12 @@ public:
 
   void clear() override;
 
-  any copy() override;
+  [[nodiscard]] any copy() const override;
   void reverse() override;
 
-  any count(const any &value) const override;
-  any index(const any &value, const any &bIndex, const any &eIndex)
-      const override;
+  [[nodiscard]] any count(const any &value) const override;
+  [[nodiscard]] any
+  index(const any &value, const any &bIndex, const any &eIndex) const override;
   using object::index;
   void remove(const any &value) override;
 
@@ -40,14 +40,14 @@ public:
   [[nodiscard]] iterator end() const override;
   [[nodiscard]] integer size() const override;
 
-  any &operator[](const integer &) override;
+  any &operator[](const integer &) const override;
 
 private:
   void accept(visitor &) const override;
 
-  [[nodiscard]] std::unique_ptr<object> clone() const override;
   [[nodiscard]] bool equals(const object &) const override;
   [[nodiscard]] bool less(const object &) const override;
+  [[nodiscard]] virtual std::unique_ptr<object> clone() const;
 
   void replace(integer bIndex, integer eIndex, const sequence &) override;
 
